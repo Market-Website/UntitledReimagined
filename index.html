@@ -3,9 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vintage Vinyl Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                linear-gradient(rgba(139, 90, 43, 0.1), rgba(101, 67, 33, 0.1)),
+                repeating-linear-gradient(90deg, #8B5A2B 0px, #A0826D 2px, #8B5A2B 4px),
+                linear-gradient(180deg, #654321 0%, #8B5A2B 50%, #654321 100%);
+            height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        header {
+            text-align: center;
+            color: #f4e4c1;
+            margin-bottom: 60px;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        .vinyl-grid {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .vinyl-card {
+            position: absolute;
+            background: transparent;
+            border-radius: 3px;
+            overflow: visible;
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.4),
+                0 8px 20px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            width: 250px;
+            z-index: 1;
+        }
+
+        .vinyl-card:hover {
+            transform: scale(1.2) rotate(0deg) !important;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.6),
+                0 30px 60px rgba(0,0,0,0.4);
+            z-index: 100 !important;
+        }
+
+        .vinyl-image-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: #f0f0f0;
+            cursor: pointer;
+            border: 4px solid #222;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .vinyl-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .vinyl-info {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 16px;
+            border-radius: 4px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            min-width: 260px;
+            max-width: 300px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-top: 8px;
+        }
+
+        .vinyl-info:hover {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .vinyl-card:hover .vinyl-info {
+            opacity: 1;
+            pointer-events: auto;
+            transition-delay: 0s;
+        }
+
+        .vinyl-info {
+            transition: opacity 0.2s ease 0.1s;
+        }
+
+        .vinyl-card:not(:hover) .vinyl-info {
+            transition-delay: 0.2s;
+        }
+
+        .vinyl-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        .vinyl-artist {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .vinyl-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .vinyl-year {
+            color: #999;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .vinyl-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            color: #333;
+        }
+
+        .play-btn:hover {
+            background: #f5f5f5;
+            border-color: rgba(0,0,0,0.2);
+        }
+
+        .play-btn.playing {
+            background: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .buy-btn:hover {
+            background: #333;
+        }
+
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <div class="vinyl-grid" id="vinylGrid">
+            <!-- Vinyl cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
